@@ -51,6 +51,26 @@ const SnackBar = (message: string, variant: Variant) => {
   ));
 };
 
+/**
+ * Displays a success snackbar with a custom message.
+ *
+ * @function showSuccessSnackBar
+ * @param {string} message - The message to be displayed in the snackbar.
+ */
 export const showSuccessSnackBar = (msg: string) => SnackBar(msg, "success");
+
+/**
+ * Displays an error snackbar with a custom message.
+ *
+ * @function showErrorSnackBar
+ * @param {string} message - The message to be displayed in the snackbar.
+ */
 export const showErrorSnackBar = (msg: string) => SnackBar(msg, "error");
+
+/**
+ * Displays a warning snackbar with a custom message.
+ *
+ * @function showWarningSnackBar
+ * @param {string} message - The message to be displayed in the snackbar.
+ */
 export const showWarningSnackBar = (msg: string) => SnackBar(msg, "warning");

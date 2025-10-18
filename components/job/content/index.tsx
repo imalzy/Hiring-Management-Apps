@@ -7,11 +7,6 @@ import SearchBar from "@/components/search-bar";
 import JobCard from "@/components/ui/JobCard";
 import { Jobs } from "../types";
 import JobListSkeleton from "@/components/ui/JobListSkeleton";
-import {
-  showErrorSnackBar,
-  showSuccessSnackBar,
-  showWarningSnackBar,
-} from "@/components/ui/Snackbar";
 
 interface JobContentProps {
   openModal: () => void;
@@ -22,10 +17,6 @@ const JobContent = ({ openModal }: JobContentProps) => {
   const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
-    showSuccessSnackBar("successfully");
-    showErrorSnackBar("successfully");
-    showWarningSnackBar("successfully");
-
     try {
       const { status, data } = await axios.get("/api/jobs");
       if (status === 200) {
