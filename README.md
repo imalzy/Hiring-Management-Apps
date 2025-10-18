@@ -36,7 +36,7 @@ The project follows a modular and scalable folder structure with a clear separat
 ---
 ## 🧩 How to Run Locally
 
-### 1️⃣ Clone the Repository
+### Clone the Repository
 
 git clone https://github.com/your-username/hiring-management-web-app.git
 cd hiring-management-web-app
@@ -48,6 +48,7 @@ npm install
 ### Setup Environment Variables
 
 DATABASE_URL="postgresql://user:password@localhost:5432/hiring_db"
+DIRECT_URL="postgresql://user:password@localhost:6432/hiring_db"
 
 ### Setup Prisma
 
