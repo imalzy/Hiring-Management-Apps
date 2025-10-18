@@ -55,11 +55,11 @@ export const JobForm = ({ onClose }: { onClose: () => void }) => {
                 required
                 placeholder="Select job type"
                 options={[
-                  { label: "Full-time", value: "full_time" },
-                  { label: "Contract", value: "contract" },
-                  { label: "Part-time", value: "part_time" },
-                  { label: "Internship", value: "internship" },
-                  { label: "Freelance", value: "freelance" },
+                  { label: "Full-time", value: "FULL_TIME" },
+                  { label: "Contract", value: "CONTRACT" },
+                  { label: "Part-time", value: "PART_TIME" },
+                  { label: "Internship", value: "INTERNSHIP" },
+                  { label: "Freelance", value: "FREELANCE" },
                 ]}
                 error={errors.jobs?.jobType?.message}
               />
