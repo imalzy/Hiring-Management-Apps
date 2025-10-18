@@ -7,7 +7,7 @@ interface JobCardProps {
   salaryMin?: number;
   salaryMax?: number;
   currency?: string;
-  startedOn?: Date | string;
+  startedOn?: string;
   status?: JobStatus;
 }
 
@@ -48,7 +48,7 @@ export default function JobCard({
             {getStatusLabel()}
           </span>
           <span className="px-4 py-1 border border-[var(--natural-40)] rounded text-sm text-[var(--natural-90)]">
-            started on
+            started on {startedOn}
           </span>
         </div>
       </div>
