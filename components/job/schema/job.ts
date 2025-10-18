@@ -1,10 +1,10 @@
 import { z } from "zod";
-import { FIELD_OPTIONS, PROFILE_FIELDS } from "../constants";
+import { FIELD_OPTIONS, JOB_TYPE, PROFILE_FIELDS } from "../constants";
 
 const mainSchema = z
   .object({
     jobName: z.string().min(1, "Required"),
-    jobType: z.string().min(1, "Required"),
+    jobType: z.enum(JOB_TYPE),
     jobDesc: z.string().min(1, "Required"),
     numberOfCandidates: z.string().min(1, "Required"),
     salaryMin: z.number().min(0, "Min salary must be >= 0").optional(),

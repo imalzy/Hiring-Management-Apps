@@ -10,6 +10,13 @@ export const PROFILE_FIELDS = [
 ] as const;
 
 export const FIELD_OPTIONS = ["Mandatory", "Optional", "Off"] as const;
+export const JOB_TYPE = [
+  "FULL_TIME",
+  "CONTRACT",
+  "PART_TIME",
+  "INTERNSHIP",
+  "FREELANCE",
+];
 
 export type FieldName = (typeof PROFILE_FIELDS)[number];
 export type FieldOption = (typeof FIELD_OPTIONS)[number];

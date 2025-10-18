@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import slugify from "slugify";
 
+import slugify from "slugify";
 import prismadb from "@/libs/prismadb";
+
 import { jobSchema } from "@/components/job/schema/job";
 
 export async function GET() {
   try {
-    const jobs = await prisma.job.findMany({
+    const jobs = await prismadb.job.findMany({
       include: { formConfigs: true },
       orderBy: { createdAt: "desc" },
     });
@@ -15,7 +16,7 @@ export async function GET() {
     console.error("GET /jobs error:", err);
     return NextResponse.json(
       { error: "Failed to fetch jobs" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
@@ -27,7 +28,7 @@ export async function POST(req: NextRequest) {
     const { jobs, configs } = parsed;
     const configArray = Object.entries(configs).map(([key, value]) => ({
       fieldKey: key,
-      fieldOption: value,
+      fieldOption: value as "Mandatory" | "Optional" | "Off",
     }));
 
     const baseSlug = slugify(jobs.jobName, { lower: true, strict: true });
@@ -41,13 +42,18 @@ export async function POST(req: NextRequest) {
       slug: uniqueSlug,
       title: jobs.jobName,
       jobDesc: jobs.jobDesc,
-      jobType: jobs.jobType.toUpperCase(),
+      jobType: jobs.jobType?.toUpperCase() as
+        | "FULL_TIME"
+        | "CONTRACT"
+        | "PART_TIME"
+        | "INTERNSHIP"
+        | "FREELANCE",
       numberOfCandidates: Number(jobs.numberOfCandidates),
-      salaryMin: jobs.salaryMin,
-      salaryMax: jobs.salaryMax,
+      salaryMin: jobs.salaryMin ? Number(jobs.salaryMin) : null,
+      salaryMax: jobs.salaryMax ? Number(jobs.salaryMax) : null,
       currency: "IDR",
       formConfigs: {
-        create: configArray,
+        create: [...configArray],
       },
     };
 
@@ -118,7 +124,7 @@ export async function DELETE(req: Request) {
     console.error("DELETE /jobs error:", err);
     return NextResponse.json(
       { error: err instanceof Error ? err.message : "Failed to delete job" },
-      { status: 400 },
+      { status: 400 }
     );
   }
 }
