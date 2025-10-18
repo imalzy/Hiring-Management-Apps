@@ -1,26 +1,100 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+    --background: #ffffff;
+    --foreground: #171717;
+    --font-nunito-sans: "Nunito Sans", sans-serif;
+    --primary-color: #01959f;
+    --secondary-color: #fbc037;
+    --success-color: #43936c;
+    --natural-40: #e0e0e0;
+    --natural-60: #9e9e9e;
+    --natural-70: #757575;
+    --natural-80: #616161;
+    --natural-90: #404040;
+    --natural-100: #1d1f20;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --font-sans: var(--font-geist-sans);
+    --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+    :root {
+        --background: #0a0a0a;
+        --foreground: #ededed;
+    }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-nunito-sans);
+}
+
+@layer utilities {
+    .primary-scrollbar::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .primary-scrollbar::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+
+    .primary-scrollbar::-webkit-scrollbar-thumb {
+        background: var(--primary-color);
+        border-radius: 10px;
+    }
+
+    .primary-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: var(--primary-color);
+    }
+
+    .primary-scrollbar {
+        scrollbar-width: thin;
+        scrollbar-color: var(--primary-color) #f1f1f1;
+    }
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+@keyframes enter {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes leave {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+.animate-enter {
+    animation: enter 0.25s ease-out forwards;
+}
+
+.animate-leave {
+    animation: leave 0.25s ease-in forwards;
 }
