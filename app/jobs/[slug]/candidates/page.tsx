@@ -1,13 +1,6 @@
 import CandidateContent from "@/components/candidate/content";
 import { Metadata } from "next";
 
-interface CandidatesPageProps {
-  params: {
-    slug: string;
-  };
-}
-
-// ✅ Metadata needs to await props
 export async function generateMetadata({
   params,
 }: Readonly<{
@@ -32,7 +25,6 @@ export async function generateMetadata({
   };
 }
 
-// ✅ Page component must also await props
 export default async function CandidatesPage({
   params,
 }: Readonly<{
