@@ -10,6 +10,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   (
     { label, required, error, type = "text", className = "", ...props },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ref,
   ) => {
     const [showPassword, setShowPassword] = useState(false);
