@@ -47,6 +47,8 @@ const JobContent = ({ openModal }: JobContentProps) => {
           items.map((item) => (
             <JobCard
               key={item.id}
+              id={item.id}
+              slug={item.slug}
               title={item?.title}
               salaryMin={item?.salaryMin}
               salaryMax={item?.salaryMax}

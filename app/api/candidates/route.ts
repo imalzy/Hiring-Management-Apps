@@ -5,13 +5,53 @@ import prismadb from "@/libs/prismadb";
 
 import { jobSchema } from "@/components/job/schema/job";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
-    const jobs = await prismadb.job.findMany({
-      include: { formConfigs: true },
+    const { searchParams } = new URL(req.url);
+    console.log("[searchParams]", searchParams);
+
+    const jobsDetail = await prismadb.job.findMany({
+      where: {
+        id: searchParams.get("id") || undefined,
+        slug: searchParams.get("slug") || undefined,
+      },
+      include: {
+        Candidate: {
+          include: {
+            attributes: true,
+          },
+        },
+      },
       orderBy: { createdAt: "desc" },
     });
-    return NextResponse.json({ data: jobs });
+
+    const candidates =
+      jobsDetail.flatMap((job) =>
+        job.Candidate.map((cand) => ({
+          id: cand.id,
+          attributes: cand.attributes.map((attr) => ({
+            key: attr.key,
+            label: attr.label,
+            value: attr.value,
+            order: attr.order,
+          })),
+        })),
+      ) || [];
+
+    const job = jobsDetail.map((j) => ({
+      id: j.id,
+      slug: j.slug,
+      title: j.title,
+    }));
+
+    const resp = {
+      ...job[0],
+      attributes: candidates,
+    };
+
+    return NextResponse.json({
+      data: { ...resp },
+    });
   } catch (err) {
     console.error("GET /jobs error:", err);
     return NextResponse.json(

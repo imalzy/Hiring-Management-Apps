@@ -1,8 +1,11 @@
 import Button from "./Button";
 
 import { JobStatus } from "../job/types";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface JobCardProps {
+  id?: string;
+  slug?: string;
   title?: string;
   salaryMin?: number;
   salaryMax?: number;
@@ -12,6 +15,8 @@ interface JobCardProps {
 }
 
 export default function JobCard({
+  id,
+  slug,
   title,
   salaryMin,
   salaryMax,
@@ -19,6 +24,15 @@ export default function JobCard({
   startedOn,
   status,
 }: JobCardProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const createQueryString = (name: string, value: string) => {
+    const params = new URLSearchParams(searchParams);
+    params.set(name, value);
+    return params.toString();
+  };
+
   const formatCurrency = (value: number) =>
     `${currency}${value.toLocaleString("id-ID")}`;
 
@@ -33,6 +47,13 @@ export default function JobCard({
     if (status === "ACTIVE") return "Active";
     if (status === "INACTIVE") return "Inactive";
     return "Draft";
+  };
+
+  const handleManage = () => {
+    if (id) {
+      const newQueryString = createQueryString("id", id);
+      router.push(`/jobs/${slug}/candidates?${newQueryString}`);
+    }
   };
 
   return (
@@ -68,6 +89,7 @@ export default function JobCard({
           className="!text-xs flex-1  max-w-max max-h-[28px]"
           variant="primary"
           label="Manage Job"
+          onClick={handleManage}
         />
       </div>
     </div>
