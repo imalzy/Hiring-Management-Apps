@@ -1,8 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Controller } from "react-hook-form";
 
+import { Controller } from "react-hook-form";
+import axios from "axios";
 import toast from "react-hot-toast";
 
 import { LoginType } from "../../schema/login";
@@ -10,7 +11,6 @@ import { useLoginForm } from "../../hooks/use-login-form";
 
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
-import axios from "axios";
 
 const Login = () => {
   const router = useRouter();
@@ -22,7 +22,7 @@ const Login = () => {
       await axios.post("/api/login", formData);
       toast.success("Login successful!");
       reset();
-      // onClose();
+      router.replace("/dashboard");
     },
     (err) => {
       console.error("Form submission error:", err);

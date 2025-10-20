@@ -1,8 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import * as jose from "jose";
+
 import prismadb from "@/libs/prismadb";
 import { comparePassword } from "@/libs/bcrypt";
-import { createSession } from "@/libs/auth";
+
+const jwtConfig = {
+  secret: new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_SECRET),
+};
 
 export async function POST(req: NextRequest) {
   try {
@@ -22,12 +27,31 @@ export async function POST(req: NextRequest) {
         { status: 401 },
       );
 
-    createSession({ id: user.id, role: user.role });
+    const jwt = await new jose.SignJWT({
+      id: user.id,
+      role: user.role,
+      fullname: user.name,
+    })
+      .setExpirationTime("7d")
+      .setProtectedHeader({ alg: "HS256" })
+      .sign(jwtConfig.secret);
 
-    return NextResponse.json({
-      success: true,
-      user: { id: user.id, role: user.role },
+    const res = NextResponse.json({
+      message: "Login success",
+      role: user.role,
+      id: user.id,
     });
+
+    res.cookies.set({
+      name: "session",
+      value: jwt,
+      httpOnly: true,
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7,
+    });
+
+    return res;
   } catch (err) {
     console.error(err);
     return NextResponse.json({ error: "Login failed" }, { status: 500 });
