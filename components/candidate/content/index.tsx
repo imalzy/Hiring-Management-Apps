@@ -8,7 +8,7 @@ import type {
   Attribute,
   CandidateInJobDetail,
   JobDetail,
-} from "@/components/job/types";
+} from "@/components/dashboard/types";
 
 interface CandidateContentProps {
   slug: string;

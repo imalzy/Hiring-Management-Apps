@@ -1,5 +1,5 @@
 import React from "react";
-import { FIELD_OPTIONS, FieldOption } from "../job/constants";
+import { FIELD_OPTIONS, FieldOption } from "../dashboard/constants";
 
 interface ToggleGroupProps {
   label: { key: string; name: string };

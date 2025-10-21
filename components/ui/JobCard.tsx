@@ -1,6 +1,6 @@
+import { JobStatus } from "../dashboard/types";
 import Button from "./Button";
 
-import { JobStatus } from "../job/types";
 import { useRouter, useSearchParams } from "next/navigation";
 
 interface JobCardProps {
