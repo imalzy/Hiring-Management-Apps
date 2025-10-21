@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import slugify from "slugify";
 import prismadb from "@/libs/prismadb";
 
-import { jobSchema } from "@/components/job/schema/job";
+import { jobSchema } from "@/components/dashboard/schema/job";
 
 export async function GET() {
   try {

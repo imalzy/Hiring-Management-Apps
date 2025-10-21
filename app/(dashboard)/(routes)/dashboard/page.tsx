@@ -3,9 +3,9 @@
 import { useState } from "react";
 
 import CreateJob from "@/components/create-job";
-import CreateJobModal from "@/components/job/modals/job-modal";
 import Button from "@/components/ui/Button";
-import JobContent from "@/components/job/content";
+import JobContent from "@/components/dashboard/content";
+import JobModal from "@/components/dashboard/modals/job-modal";
 
 export default function JobPage() {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,7 +29,7 @@ export default function JobPage() {
           <CreateJob onClick={handleOpenModal} />
         </aside>
       </main>
-      <CreateJobModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <JobModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </>
   );
 }

@@ -44,14 +44,14 @@ const JobContent = ({ openModal }: JobContentProps) => {
         {!loading &&
           items &&
           items.length > 0 &&
-          items.map((item) => (
+          items.map((item, index) => (
             <JobCard
-              key={item.id}
+              key={item.id || index}
               id={item.id}
               slug={item.slug}
-              title={item?.title}
-              salaryMin={item?.salaryMin}
-              salaryMax={item?.salaryMax}
+              title={item?.title || ""}
+              salaryMin={item?.salaryMin || 0}
+              salaryMax={item?.salaryMax || 0}
               startedOn={fDateTime(item?.createdAt, formatStr.date) || ""}
               status={item?.status}
             />

@@ -12,8 +12,11 @@ export default function JobModal({
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-      <div className="bg-white w-full max-w-3xl rounded-2xl shadow-lg overflow-hidden font-['Nunito_Sans']">
-        <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4">
+      <div
+        className="bg-white w-full max-w-[900px] rounded-[10px] overflow-hidden font-['Nunito_Sans']"
+        style={{ boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)" }}
+      >
+        <div className="flex items-center justify-between border-b border-[var(--natural-40)] px-6 py-4">
           <h2 className="text-lg font-semibold text-gray-800">Job Opening</h2>
           <button
             onClick={onClose}

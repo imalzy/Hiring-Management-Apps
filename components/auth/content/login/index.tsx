@@ -19,10 +19,14 @@ const Login = () => {
   const onSubmitHandler = handleSubmit(
     async (formData: LoginType) => {
       trigger();
-      await axios.post("/api/login", formData);
-      toast.success("Login successful!");
-      reset();
-      router.replace("/dashboard");
+      const response = await axios.post("/api/login", formData);
+      if (response.status === 200) {
+        toast.success("Login successful!");
+        reset();
+        router.replace("/dashboard");
+      } else {
+        toast.error("Login failed!");
+      }
     },
     (err) => {
       console.error("Form submission error:", err);
