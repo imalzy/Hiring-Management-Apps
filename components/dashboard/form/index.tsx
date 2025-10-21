@@ -10,7 +10,6 @@ import Button from "@/components/ui/Button";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useJobForm } from "../hooks/use-job-form";
-import RichTextEditor from "@/components/ui/RichTextEditor";
 
 export const JobForm = ({ onClose }: { onClose: () => void }) => {
   const { control, handleSubmit, trigger, errors, reset } = useJobForm();
