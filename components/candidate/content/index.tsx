@@ -3,6 +3,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import Image from "next/image";
 
 import type {
   Attribute,
@@ -53,70 +54,91 @@ const CandidateContent = ({ slug }: CandidateContentProps) => {
   if (loading) return <div className="p-6 text-gray-600">Loading...</div>;
   if (!job || !job.attributes?.length)
     return (
-      <div className="p-6 text-gray-500">
-        No candidates available for <b>{job?.title}</b>.
+      <div className="p-6 bg-gray-50 min-h-screen">
+        <div className="mb-4">
+          <h1 className="text-2xl font-semibold text-gray-800">{job?.title}</h1>
+          <p className="text-sm text-gray-500">Manage Candidates</p>
+        </div>
+        {!job ||
+          (!job.attributes?.length && (
+            <div className="flex justify-center items-center bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden min-h-[500px]">
+              <div className="flex flex-col">
+                <Image
+                  src="/assets/images/candidate-empty-state.svg"
+                  alt="No Candidates"
+                  width={256}
+                  height={240}
+                />
+                <h1 className="text-[16px] text-black font-bold">
+                  No candidates found
+                </h1>
+                <p className="text-[var(--natural-70)] text-sm">
+                  Share your job vacancies so that more candidates will apply.
+                </p>
+              </div>
+            </div>
+          ))}
+
+        {job && job.attributes.length > 0 && (
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <table className="min-w-full divide-y divide-gray-100 text-sm">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-6 py-3 text-left font-medium text-gray-700">
+                    <input type="checkbox" />
+                  </th>
+                  {headers.map((header) => (
+                    <th
+                      key={header.key}
+                      className="px-6 py-3 text-left font-medium text-gray-700"
+                    >
+                      {header.label}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+
+              <tbody className="divide-y divide-gray-100 bg-white">
+                {candidates.map((candidate) => (
+                  <tr
+                    key={candidate.id}
+                    className="hover:bg-gray-50 transition"
+                  >
+                    <td className="px-6 py-4">
+                      <input type="checkbox" />
+                    </td>
+                    {headers.map((header) => {
+                      const attr = candidate.attributes.find(
+                        (a) => a.key === header.key,
+                      );
+                      return (
+                        <td
+                          key={header.key}
+                          className="px-6 py-4 text-gray-700"
+                        >
+                          {header.key === "portfolio" && attr?.value ? (
+                            <a
+                              href={attr.value}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-teal-600 hover:underline truncate"
+                            >
+                              {attr.value}
+                            </a>
+                          ) : (
+                            attr?.value || "-"
+                          )}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     );
-
-  return (
-    <div className="p-6 bg-gray-50 min-h-screen">
-      <div className="mb-4">
-        <h1 className="text-2xl font-semibold text-gray-800">{job.title}</h1>
-        <p className="text-sm text-gray-500">Manage Candidates</p>
-      </div>
-
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-100 text-sm">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left font-medium text-gray-700">
-                <input type="checkbox" />
-              </th>
-              {headers.map((header) => (
-                <th
-                  key={header.key}
-                  className="px-6 py-3 text-left font-medium text-gray-700"
-                >
-                  {header.label}
-                </th>
-              ))}
-            </tr>
-          </thead>
-
-          <tbody className="divide-y divide-gray-100 bg-white">
-            {candidates.map((candidate) => (
-              <tr key={candidate.id} className="hover:bg-gray-50 transition">
-                <td className="px-6 py-4">
-                  <input type="checkbox" />
-                </td>
-                {headers.map((header) => {
-                  const attr = candidate.attributes.find(
-                    (a) => a.key === header.key,
-                  );
-                  return (
-                    <td key={header.key} className="px-6 py-4 text-gray-700">
-                      {header.key === "portfolio" && attr?.value ? (
-                        <a
-                          href={attr.value}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-teal-600 hover:underline truncate"
-                        >
-                          {attr.value}
-                        </a>
-                      ) : (
-                        attr?.value || "-"
-                      )}
-                    </td>
-                  );
-                })}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
 };
 
 export default CandidateContent;

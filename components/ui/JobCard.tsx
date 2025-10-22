@@ -52,7 +52,7 @@ export default function JobCard({
   const handleManage = () => {
     if (id) {
       const newQueryString = createQueryString("id", id);
-      router.push(`/jobs/${slug}/candidates?${newQueryString}`);
+      router.push(`/dashboard/${slug}/candidates?${newQueryString}`);
     }
   };
 
