@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import WebcamModal from "@/components/jobs/modals/camera-modal";
 import axios from "axios";
 import { Jobs } from "@/components/dashboard/types";
 import DynamicForm from "../form";
@@ -64,7 +63,7 @@ const ResumeContent: React.FC<ResumeContentProps> = ({ jobId }) => {
             ℹ️ This field required to fill
           </p>
         </div>
-        <DynamicForm fields={job?.formConfigs || []} />
+        <DynamicForm fields={job?.formConfigs || []} jobId={jobId} />
       </div>
     </div>
   );

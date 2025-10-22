@@ -20,9 +20,12 @@ import PhoneNumberInput from "@/components/ui/PhoneNumberInput";
 import InputDatePicker from "@/components/ui/InputDatePicker";
 import { INDO_REGION } from "@/libs/domicile";
 import Button from "@/components/ui/Button";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 type DynamicFormProps = {
   fields: FormConfig[];
+  jobId: string;
 };
 
 export const getDefaultValues = (content: FormConfig[]) => {
@@ -42,7 +45,8 @@ export const getDefaultValues = (content: FormConfig[]) => {
   return defaultValues;
 };
 
-const DynamicForm = ({ fields }: DynamicFormProps) => {
+const DynamicForm = ({ fields, jobId }: DynamicFormProps) => {
+  const router = useRouter();
   const [photoPreview, setPhotoPreview] = useState<string>(
     "/assets/images/profile-placeholder.svg",
   );
@@ -59,17 +63,35 @@ const DynamicForm = ({ fields }: DynamicFormProps) => {
     formState: { errors },
     reset,
     getValues,
+    setValue,
   } = useForm<DynamicFormType>({
     mode: "all",
     resolver: zodResolver(formSchema),
     defaultValues: getDefaultValues(fields),
   });
 
+  const onCaptureHandler = (image: string) => {
+    setPhotoPreview(image);
+    setOpen(false);
+    setValue("photo_profile", image);
+  };
+
+  const onSubmit = async (data: DynamicFormType) => {
+    try {
+      const resp = await axios.post(`/api/jobs/${jobId}/apply`, data);
+      if (resp && resp.status > 200 && resp.status < 299) {
+        router.replace("/jobs/success");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <form
         className="px-10 pb-10 space-y-5"
-        onSubmit={handleSubmit((data) => console.log(data))}
+        onSubmit={handleSubmit((data) => onSubmit(data))}
       >
         {fieldConfigs
           .filter((field): field is NonNullable<typeof field> => field !== null)
@@ -107,30 +129,6 @@ const DynamicForm = ({ fields }: DynamicFormProps) => {
                         />{" "}
                         Take a Picture
                       </label>
-
-                      {/*<Controller
-                        name={fieldKey}
-                        control={control}
-                        render={({ field }) => (
-                          <input
-                            {...field}
-                            id={field.name}
-                            type="file"
-                            className="hidden"
-                            onChange={(e) => {
-                              const file = e.target.files?.[0] || null;
-                              field.onChange(file);
-
-                              if (file) {
-                                const previewUrl = URL.createObjectURL(file);
-                                setPhotoPreview(previewUrl);
-                              } else {
-                                setPhotoPreview("");
-                              }
-                            }}
-                          />
-                        )}
-                      />*/}
                     </div>
                   </div>
                 </div>
@@ -267,8 +265,7 @@ const DynamicForm = ({ fields }: DynamicFormProps) => {
         open={open}
         onClose={() => setOpen(false)}
         onCapture={(image) => {
-          setPhotoPreview(image);
-          setOpen(false);
+          onCaptureHandler(image);
         }}
       />
     </>

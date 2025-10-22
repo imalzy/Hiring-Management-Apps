@@ -4,7 +4,7 @@ export const baseResumeSchema = z.object({
   full_name: z.string().nonempty("Required").default(""),
   photo_profile: z.string().nonempty("Required").default(""),
   gender: z.string().default(""),
-  domicile: z.number().or(z.string()).default(0),
+  domicile: z.string().optional().default(""),
   email: z
     .email("Please enter your email in the format: name@example.com")
     .nonempty("Required")

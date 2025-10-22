@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import Image from "next/image";
 
 interface Option {
-  id: number;
+  id: string;
   label: string;
   value: string;
 }
@@ -12,8 +12,8 @@ interface SelectProps {
   required?: boolean;
   placeholder?: string;
   options: Option[];
-  value?: number; // Store `id` here, not `value`
-  onChange: (value: number) => void;
+  value?: string; // Store `id` here, not `value`
+  onChange: (value: string) => void;
   error?: string;
 }
 
@@ -31,7 +31,6 @@ export default function Select({
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Initialize search field with label corresponding to the current value (id)
     const selectedLabel = options.find((opt) => opt.id === value)?.label || "";
     setSearch(selectedLabel);
   }, [value, options]);
@@ -102,8 +101,8 @@ export default function Select({
                   <div
                     key={option.id}
                     onClick={() => {
-                      onChange(option.id); // Pass `id` to `onChange` (not `value`)
-                      setSearch(option.label); // Set label for display in input field
+                      onChange(option.id);
+                      setSearch(option.label);
                       setOpen(false);
                     }}
                     className={`relative px-4 py-2 cursor-pointer text-xs font-bold ${

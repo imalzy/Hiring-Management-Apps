@@ -19,7 +19,7 @@ const JobDetail = (props: JobDetailProps) => {
 
   if (!props.title)
     return (
-      <div className="flex flex-col items-center justify-center w-[802px] h-[768px] border border-[#E0E0E0] rounded-lg text-gray-400">
+      <div className="flex flex-col items-center justify-center w-full h-[768px]  text-gray-400">
         Select a job to view details
       </div>
     );

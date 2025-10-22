@@ -3,11 +3,10 @@ import { NextResponse, NextRequest } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  contextPromise: Promise<{ params: { id: string } }>,
+  context: { params: Promise<{ id: string }> },
 ) {
   try {
-    const { params } = await contextPromise;
-    const { id } = params;
+    const { id } = await context.params;
 
     if (!id) {
       return new NextResponse("Invalid or missing job ID params", {

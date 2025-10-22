@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import WebcamCapture from "../components/web-capture";
+import Button from "@/components/ui/Button";
 
 interface WebcamModalProps {
   open: boolean;
@@ -13,7 +14,14 @@ const WebcamModal: React.FC<WebcamModalProps> = ({
   onClose,
   onCapture,
 }) => {
+  const [img, setImg] = React.useState<string | null>(null);
+  const [captured, setCaptured] = React.useState<boolean>(false);
   if (!open) return null;
+
+  const handleCapture = (image: string) => {
+    setImg(image);
+    setCaptured(true);
+  };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
@@ -43,23 +51,61 @@ const WebcamModal: React.FC<WebcamModalProps> = ({
           </button>
         </div>
         <div className="px-6 pb-6 flex flex-col items-center gap-6">
-          <WebcamCapture onCapture={onCapture} />
+          {captured && img && (
+            <>
+              <div className="w-[480px] h-[360px]">
+                <Image
+                  src={img}
+                  alt="captured"
+                  width={480}
+                  height={360}
+                  sizes="(max-width: 640px) 180px, 250px"
+                />
+              </div>
+              <div className="w-full flex gap-4 justify-center">
+                <Button
+                  variant="primary"
+                  label="Retake photo"
+                  className="border !border-[var(--natural-40)] !bg-white !text-[var(--natural-100)] !h-8 !text-sm !font-bold"
+                  onClick={() => {
+                    setCaptured(false);
+                    setImg(null);
+                  }}
+                />
 
-          <p className="text-sm text-[var(--natural-100)] w-full self-start">
-            To take a picture, follow the hand poses in the order shown below.
-            The system will automatically capture the image once the final pose
-            is detected.
-          </p>
+                <Button
+                  variant="primary"
+                  label="Submit"
+                  className="h-8 !text-sm !font-bold"
+                  onClick={() => {
+                    onCapture(img);
+                    setCaptured(false);
+                    setImg(null);
+                  }}
+                />
+              </div>
+            </>
+          )}
 
-          <div className="flex items-center gap-3">
-            <Image
-              src={"/assets/images/rules-camera.svg"}
-              alt="camera"
-              width={250}
-              height={57}
-              sizes="(max-width: 640px) 180px, 250px"
-            />
-          </div>
+          {!captured && !img && (
+            <>
+              <WebcamCapture onCapture={handleCapture} />
+              <p className="text-sm text-[var(--natural-100)] w-full self-start">
+                To take a picture, follow the hand poses in the order shown
+                below. The system will automatically capture the image once the
+                final pose is detected.
+              </p>
+              <div className="flex items-center gap-3">
+                <Image
+                  src={"/assets/images/rules-camera.svg"}
+                  alt="camera"
+                  width={250}
+                  height={57}
+                  sizes="(max-width: 640px) 180px, 250px"
+                />
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
