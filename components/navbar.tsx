@@ -26,7 +26,9 @@ export default function Header({ user }: NavbarProps) {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const isCandidatePage = pathname.includes("/candidates");
-  const isResumePage = pathname.match(/^(.+?\/resume)(?:\/|$)/);
+  const isResumePage =
+    pathname.match(/^(.+?\/resume)(?:\/|$)/) ||
+    pathname.match(/^(.+?\/success)(?:\/|$)/);
   const title = isCandidatePage ? "Manage Candidate" : "Job List";
   const role = user?.role;
 
