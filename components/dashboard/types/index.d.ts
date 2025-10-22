@@ -20,7 +20,7 @@ export interface Jobs {
 export interface FormConfig {
   id?: string;
   fieldKey?: string;
-  fieldOption?: string;
+  fieldOption?: "Mandatory" | "Optional" | "Off";
   jobId?: string;
 }
 

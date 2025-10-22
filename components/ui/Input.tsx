@@ -1,4 +1,5 @@
 import { Eye, EyeOff } from "lucide-react";
+import Image from "next/image";
 import React, { useState } from "react";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -15,6 +16,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ) => {
     const [showPassword, setShowPassword] = useState(false);
     const isPassword = type === "password";
+    const isDate = type === "date";
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (type === "number") {
@@ -25,7 +27,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       }
     };
     return (
-      <div className="w-full font-['Nunito_Sans']">
+      <div className="w-full font-[var(--font-nunito-sans)]">
         {label && (
           <label className="block text-sm font-medium text-gray-700 mb-1">
             {label} {required && <span className="text-red-500">*</span>}
@@ -33,6 +35,16 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         )}
 
         <div className="relative">
+          {isDate && (
+            <Image
+              src={"/assets/icons/calendar.svg"}
+              alt="Calendar Icon"
+              className="absolute left-2.5 top-1/2 -translate-y-1/2"
+              height={16}
+              width={16}
+            />
+          )}
+
           <input
             {...props}
             type={isPassword && showPassword ? "text" : type}
@@ -41,7 +53,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             className={`
             w-full rounded-lg border-2 border-[var(--natural-40)] text-[var(--natural-90)] bg-white px-3 py-2 text-sm
             focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent outline-none
-            placeholder:text-gray-400 resize-none h-10
+            placeholder:text-[var(--natural-60)] resize-none h-10
             ${error ? "border-red-500" : ""}
             ${className}
                 `}

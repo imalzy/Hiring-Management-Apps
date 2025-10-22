@@ -99,3 +99,12 @@ input[type="number"] {
 .animate-leave {
     animation: leave 0.25s ease-in forwards;
 }
+
+@layer utilities {
+    .fade-enter {
+        @apply opacity-0;
+    }
+    .fade-enter-active {
+        @apply opacity-100 transition-opacity duration-200;
+    }
+}

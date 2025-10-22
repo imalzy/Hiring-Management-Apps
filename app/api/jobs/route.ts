@@ -69,46 +69,6 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// export async function PUT(req: Request) {
-//   try {
-//     const { searchParams } = new URL(req.url);
-//     const id = searchParams.get("id");
-//     if (!id)
-//       return NextResponse.json({ error: "Missing job ID" }, { status: 400 });
-
-//     const body = await req.json();
-//     const parsed = jobSchema.partial().parse(body);
-//     const { jobs, configs } = parsed;
-
-//     const configArray = Object.entries(configs).map(([key, value]) => ({
-//       fieldKey: key,
-//       fieldOption: value,
-//     }));
-
-//     const job = await prismadb.job.update({
-//       where: { id },
-//       data: {
-//         ...parsed,
-//         formConfigs: configs
-//           ? {
-//               deleteMany: {},
-//               create: configArray,
-//             }
-//           : undefined,
-//       },
-//       include: { formConfigs: true },
-//     });
-
-//     return NextResponse.json({ data: job });
-//   } catch (err) {
-//     console.error("PUT /jobs error:", err);
-//     return NextResponse.json(
-//       { error: err instanceof Error ? err.message : "Failed to update job" },
-//       { status: 400 },
-//     );
-//   }
-// }
-
 export async function DELETE(req: Request) {
   try {
     const { searchParams } = new URL(req.url);

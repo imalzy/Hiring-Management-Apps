@@ -1,7 +1,8 @@
+import { useState, useEffect, useRef, useMemo } from "react";
 import Image from "next/image";
-import { useState, useRef, useEffect } from "react";
 
 interface Option {
+  id: number;
   label: string;
   value: string;
 }
@@ -11,9 +12,9 @@ interface SelectProps {
   required?: boolean;
   placeholder?: string;
   options: Option[];
-  value?: string;
+  value?: number; // Store `id` here, not `value`
+  onChange: (value: number) => void;
   error?: string;
-  onChange: (value: string) => void;
 }
 
 export default function Select({
@@ -26,8 +27,14 @@ export default function Select({
   error,
 }: SelectProps) {
   const [open, setOpen] = useState(false);
-
+  const [search, setSearch] = useState("");
   const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Initialize search field with label corresponding to the current value (id)
+    const selectedLabel = options.find((opt) => opt.id === value)?.label || "";
+    setSearch(selectedLabel);
+  }, [value, options]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -39,6 +46,15 @@ export default function Select({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const filteredOptions = useMemo(() => {
+    const query = search.toLowerCase().trim();
+    return options.filter(
+      (opt) =>
+        opt.label.toLowerCase().includes(query) ||
+        opt.value.toLowerCase().includes(query),
+    );
+  }, [options, search]);
+
   return (
     <div className="relative font-['Nunito_Sans']" ref={ref}>
       {label && (
@@ -47,48 +63,65 @@ export default function Select({
         </label>
       )}
 
-      <button
-        type="button"
-        onClick={() => setOpen(!open)}
-        className={`cursor-pointer flex w-full items-center justify-between rounded-lg border-2
-          border-[var(--natural-40)]  bg-white px-3 py-2 text-sm
-          text-left focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent
-          outline-none ${error ? "border-red-500" : ""}`}
-      >
-        <span className={value ? "text-[var(--natural-90)]" : "text-gray-400"}>
-          {options.find((opt) => opt.value === value)?.label || placeholder}
-        </span>
+      <div className="relative">
+        <input
+          type="text"
+          value={search}
+          placeholder={placeholder}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setOpen(true);
+          }}
+          onFocus={() => setOpen(true)}
+          className={`w-full rounded-lg border-2 px-3 py-2 text-sm outline-none pr-8 text-[var(--natural-90)]
+            border-[var(--natural-40)] focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent
+            ${error ? "border-red-500" : ""}`}
+        />
 
         <Image
           src="/assets/icons/chevron-down.svg"
-          className={`transition-transform ${open ? "rotate-180" : ""}`}
           alt="chevron"
           width={16}
           height={16}
+          className={`absolute right-3 top-1/2 -translate-y-1/2 transition-transform ${
+            open ? "rotate-180" : ""
+          }`}
         />
-      </button>
+      </div>
+
       {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
+
       {open && (
         <div className="absolute z-20 mt-2 w-full rounded-lg border border-gray-200 bg-white shadow-lg overflow-hidden">
-          {options.map((option) => {
-            const isSelected = option.value === value;
-            return (
-              <div
-                key={option.value}
-                onClick={() => {
-                  onChange(option.value);
-                  setOpen(false);
-                }}
-                className={`relative px-4 py-2 cursor-pointer text-xs font-bold ${
-                  isSelected
-                    ? "bg-[var(--primary-color)]/10 text-[var(--primary-color)]"
-                    : "hover:bg-[var(--primary-color)]/5 text-[var(--natural-100)]"
-                }`}
-              >
-                {option.label}
+          <div className="max-h-48 overflow-auto">
+            {filteredOptions.length > 0 ? (
+              filteredOptions.map((option) => {
+                const isSelected = option.id === value; // Compare with `id` now
+
+                return (
+                  <div
+                    key={option.id}
+                    onClick={() => {
+                      onChange(option.id); // Pass `id` to `onChange` (not `value`)
+                      setSearch(option.label); // Set label for display in input field
+                      setOpen(false);
+                    }}
+                    className={`relative px-4 py-2 cursor-pointer text-xs font-bold ${
+                      isSelected
+                        ? "bg-[var(--primary-color)]/10 text-[var(--primary-color)]"
+                        : "hover:bg-[var(--primary-color)]/5 text-[var(--natural-100)]"
+                    }`}
+                  >
+                    {option.label} - {option.value}
+                  </div>
+                );
+              })
+            ) : (
+              <div className="px-4 py-2 text-xs text-gray-400">
+                No results found
               </div>
-            );
-          })}
+            )}
+          </div>
         </div>
       )}
     </div>
