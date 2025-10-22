@@ -1,19 +1,20 @@
 # Hiring Management Web App
 
-A modern web application built with **Next.js** for managing job vacancies and candidate applications efficiently.  
+A modern web application built with **Next.js** for managing job vacancies and candidate applications efficiently.
 This project provides an intuitive admin interface to create, update, and manage job postings, along with form configurations and vacancy tracking.
 
 ---
 
 ## 🚀 Project Overview
 
+[Visit a Page] (https://hiring-management-apps.vercel.app/login)
 The **Hiring Management Web App** streamlines the process of handling job openings by allowing HR teams to:
 
-- Create and manage job vacancies  
-- Configure dynamic application forms  
-- Display job lists with skeleton loading  
-- Provide real-time feedback via toast notifications  
-- Ensure clean data management using Prisma ORM  
+- Create and manage job vacancies
+- Configure dynamic application forms
+- Display job lists with skeleton loading
+- Provide real-time feedback via toast notifications
+- Ensure clean data management using Prisma ORM
 
 The project follows a modular and scalable folder structure with a clear separation of concerns between API routes, components, hooks, and UI elements.
 
