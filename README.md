@@ -7,7 +7,7 @@ This project provides an intuitive admin interface to create, update, and manage
 
 ## 🚀 Project Overview
 
-[Visit a Page] (https://hiring-management-apps.vercel.app/login)
+[Visit a Page](https://hiring-management-apps.vercel.app/login)
 The **Hiring Management Web App** streamlines the process of handling job openings by allowing HR teams to:
 
 - Create and manage job vacancies
